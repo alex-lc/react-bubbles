@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
 
 const initialColor = {
   color: "",
@@ -70,6 +71,11 @@ const ColorList = ({ colors, updateColors }) => {
 
   return (
     <div className="colors-wrap">
+      {localStorage.getItem('token') && <UserCP onClick={() => {
+        localStorage.clear();
+        // window.location.reload();
+        history.push(`/`);
+      }}><p>Logout</p></UserCP>}
       <p>colors</p>
       <ul>
         {colors.map(color => (
@@ -123,7 +129,7 @@ const ColorList = ({ colors, updateColors }) => {
       )}
       <div className="spacer" />
       {/* stretch - build another form here to add a color */}
-      <form onSubmit={(e) => {
+      <form className="addForm" onSubmit={(e) => {
         e.preventDefault();
         addColor(colorToAdd);
       }}>
@@ -151,5 +157,26 @@ const ColorList = ({ colors, updateColors }) => {
     </div>
   );
 };
+
+const UserCP = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 2rem;
+  background: #444444;
+  color: #fafafa;
+
+  p {
+    padding-right: 5%;
+    transition: all 300ms;
+
+    &:hover {
+      transition: color 300ms;
+      color: #ccc;
+      cursor: pointer;
+    }
+  }
+`;
 
 export default ColorList;
